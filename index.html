@@ -1,18 +1,901 @@
-<h1>Meu primeiro site</h1>
-<p>Esse será o meu site.</p>
-<p>Vou contruir meu site aqui</p>
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Nexus Gamer | Seu Portal Definitivo de Jogos e E-sports</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Rajdhani para títulos gamer -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Configuração Customizada do Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        nexus: {
+                            bg: '#09090b',       // Fundo principal ultra escuro
+                            card: '#121216',     // Fundo dos cards
+                            border: '#27272a',   // Bordas sutis
+                            purple: '#9333ea',   // Roxo neon primário
+                            cyan: '#06b6d4',     // Ciano neon secundário
+                        }
+                    },
+                    boxShadow: {
+                        'neon-purple': '0 0 15px rgba(147, 51, 234, 0.4)',
+                        'neon-cyan': '0 0 15px rgba(6, 182, 212, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
+<body class="bg-nexus-bg text-zinc-200 font-sans antialiased selection:bg-nexus-purple selection:text-white overflow-x-hidden">
 
-<body>
-    <h1>Meu blog tech</h1>
-    <p>Vou compartilhar conhecimentos sobre tecnologia e programação</p>
+    <!-- Notificação Toast Customizada (Substitui alert()) -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-nexus-card border border-nexus-cyan/50 text-white px-5 py-3 rounded-xl shadow-neon-cyan flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-nexus-cyan text-lg"></i>
+            <span id="toast-message" class="text-sm font-medium">Ação realizada com sucesso!</span>
+        </div>
+    </div>
+
+    <!-- 1) CABEÇALHO / NAVBAR -->
+    <header class="sticky top-0 z-40 bg-nexus-bg/85 backdrop-blur-md border-b border-nexus-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logotipo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-nexus-purple to-nexus-cyan p-0.5 shadow-neon-purple group-hover:scale-105 transition-transform duration-300">
+                        <div class="w-full h-full bg-nexus-bg rounded-[10px] flex items-center justify-center">
+                            <i class="fa-solid fa-gamepad text-transparent bg-clip-text bg-gradient-to-r from-nexus-purple to-nexus-cyan text-xl"></i>
+                        </div>
+                    </div>
+                    <span class="font-display font-bold text-2xl sm:text-3xl tracking-wider text-white">
+                        NEXUS<span class="text-transparent bg-clip-text bg-gradient-to-r from-nexus-purple to-nexus-cyan">GAMER</span>
+                    </span>
+                </a>
+
+                <!-- Menu de Navegação (Desktop) -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="#" class="text-white font-medium border-b-2 border-nexus-cyan py-1 transition-colors">Início</a>
+                    <a href="#ultimas-noticias" class="text-zinc-400 hover:text-white font-medium transition-colors">Notícias</a>
+                    <a href="#ultimas-noticias" class="text-zinc-400 hover:text-white font-medium transition-colors">Reviews</a>
+                    <a href="#proximos-lancamentos" class="text-zinc-400 hover:text-white font-medium transition-colors">Lançamentos</a>
+                    <a href="#ultimas-noticias" class="text-zinc-400 hover:text-white font-medium transition-colors flex items-center gap-1.5">
+                        E-sports
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    </a>
+                </nav>
+
+                <!-- Barra de Pesquisa e Botão Mobile -->
+                <div class="flex items-center gap-3">
+                    <div class="relative hidden sm:block w-56 md:w-64">
+                        <input 
+                            type="text" 
+                            id="search-input" 
+                            placeholder="Buscar jogos, notícias..." 
+                            class="w-full bg-nexus-card border border-nexus-border focus:border-nexus-cyan rounded-xl py-2 pl-10 pr-4 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-nexus-cyan transition-all"
+                        >
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-zinc-500 text-sm"></i>
+                    </div>
+
+                    <!-- Botão Menu Mobile -->
+                    <button id="mobile-menu-btn" aria-label="Abrir Menu" class="lg:hidden p-2.5 rounded-xl bg-nexus-card border border-nexus-border text-zinc-300 hover:text-white hover:border-nexus-purple transition-colors">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Menu Mobile Expandível -->
+            <div id="mobile-menu" class="hidden lg:hidden pb-4 border-t border-nexus-border pt-4 space-y-3">
+                <!-- Busca Mobile -->
+                <div class="relative sm:hidden mb-3">
+                    <input 
+                        type="text" 
+                        id="search-input-mobile" 
+                        placeholder="Buscar jogos, notícias..." 
+                        class="w-full bg-nexus-card border border-nexus-border focus:border-nexus-cyan rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-zinc-500 focus:outline-none"
+                    >
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-zinc-500 text-sm"></i>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <a href="#" class="px-3 py-2 rounded-lg bg-nexus-purple/10 text-nexus-cyan font-medium">Início</a>
+                    <a href="#ultimas-noticias" class="px-3 py-2 rounded-lg text-zinc-300 hover:bg-nexus-card">Notícias</a>
+                    <a href="#ultimas-noticias" class="px-3 py-2 rounded-lg text-zinc-300 hover:bg-nexus-card">Reviews</a>
+                    <a href="#proximos-lancamentos" class="px-3 py-2 rounded-lg text-zinc-300 hover:bg-nexus-card">Lançamentos</a>
+                    <a href="#ultimas-noticias" class="px-3 py-2 rounded-lg text-zinc-300 hover:bg-nexus-card flex items-center justify-between">
+                        <span>E-sports</span>
+                        <span class="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">AO VIVO</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- 2) SEÇÃO DE DESTAQUE (HERO) -->
+        <section aria-label="Destaques Principais">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Notícia Principal (7 colunas) -->
+                <article onclick="openArticleModal(101)" class="lg:col-span-7 group relative rounded-2xl overflow-hidden bg-nexus-card border border-nexus-border hover:border-nexus-purple/60 cursor-pointer transition-all duration-300 shadow-lg min-h-[380px] sm:min-h-[450px] flex flex-col justify-end">
+                    <img 
+                        src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80" 
+                        onerror="this.src='https://placehold.co/1200x800/121216/06b6d4?text=Cyberpunk+Odyssey'"
+                        alt="Cyberpunk Odyssey" 
+                        class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                    >
+                    <!-- Gradiente escuro para leitura -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-nexus-bg via-nexus-bg/70 to-transparent"></div>
+                    
+                    <div class="relative p-6 sm:p-8 z-10 space-y-3">
+                        <div class="flex items-center gap-3">
+                            <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-lg bg-nexus-purple text-white shadow-neon-purple">
+                                Exclusivo
+                            </span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-zinc-900/80 text-nexus-cyan border border-nexus-cyan/30">
+                                PC / PS5 / Xbox
+                            </span>
+                        </div>
+                        <h1 class="font-display font-bold text-2xl sm:text-4xl text-white leading-tight group-hover:text-nexus-cyan transition-colors">
+                            Cyberpunk Odyssey: Expansão gratuita promete revolucionar o combate cibernético e dobrar o mapa
+                        </h1>
+                        <p class="text-zinc-300 text-sm sm:text-base line-clamp-2 max-w-2xl">
+                            Testamos antecipadamente a atualização 3.0 que traz suporte nativo a Path Tracing de nova geração, novas facções mercenárias e mecânicas inéditas de invasão neural.
+                        </p>
+                        <div class="flex items-center gap-4 text-xs text-zinc-400 pt-2">
+                            <span class="flex items-center gap-1.5"><i class="fa-regular fa-user text-nexus-purple"></i> Lucas Mendes</span>
+                            <span class="flex items-center gap-1.5"><i class="fa-regular fa-clock text-nexus-cyan"></i> Há 2 horas</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Duas Notícias Secundárias ao Lado (5 colunas) -->
+                <div class="lg:col-span-5 flex flex-col gap-6">
+                    
+                    <!-- Destaque Secundário 1 -->
+                    <article onclick="openArticleModal(102)" class="flex-1 group relative rounded-2xl overflow-hidden bg-nexus-card border border-nexus-border hover:border-nexus-cyan/60 cursor-pointer transition-all duration-300 min-h-[210px] flex flex-col justify-end">
+                        <img 
+                            src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80" 
+                            onerror="this.src='https://placehold.co/800x500/121216/9333ea?text=Console+NextGen'"
+                            alt="Novo Console Portátil" 
+                            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-nexus-bg via-nexus-bg/75 to-transparent"></div>
+                        <div class="relative p-5 z-10 space-y-2">
+                            <span class="px-2.5 py-0.5 text-xs font-bold uppercase rounded-md bg-nexus-cyan/20 text-nexus-cyan border border-nexus-cyan/40">
+                                Hardware
+                            </span>
+                            <h2 class="font-display font-bold text-xl sm:text-2xl text-white leading-snug group-hover:text-nexus-cyan transition-colors">
+                                Vazam especificações técnicas do próximo console híbrido da Nintendo com tela OLED 120Hz
+                            </h2>
+                            <span class="text-xs text-zinc-400 block">Por Marina Costa • Há 4 horas</span>
+                        </div>
+                    </article>
+
+                    <!-- Destaque Secundário 2 -->
+                    <article onclick="openArticleModal(103)" class="flex-1 group relative rounded-2xl overflow-hidden bg-nexus-card border border-nexus-border hover:border-nexus-purple/60 cursor-pointer transition-all duration-300 min-h-[210px] flex flex-col justify-end">
+                        <img 
+                            src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=800&q=80" 
+                            onerror="this.src='https://placehold.co/800x500/121216/06b6d4?text=Mundial+Esports'"
+                            alt="Final Mundial de E-sports" 
+                            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-nexus-bg via-nexus-bg/75 to-transparent"></div>
+                        <div class="relative p-5 z-10 space-y-2">
+                            <span class="px-2.5 py-0.5 text-xs font-bold uppercase rounded-md bg-nexus-purple/20 text-purple-300 border border-nexus-purple/40">
+                                E-Sports
+                            </span>
+                            <h2 class="font-display font-bold text-xl sm:text-2xl text-white leading-snug group-hover:text-nexus-purple transition-colors">
+                                Equipe brasileira faz história e garante vaga na grande final do Masters de Valorant em Tóquio
+                            </h2>
+                            <span class="text-xs text-zinc-400 block">Por Rafael Silva • Há 5 horas</span>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 3 & 4) GRID PRINCIPAL (ÚLTIMAS NOTÍCIAS + SIDEBAR) -->
+        <div id="ultimas-noticias" class="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-4">
+            
+            <!-- COLUNA ESQUERDA: Últimas Notícias e Filtros (8 colunas) -->
+            <div class="lg:col-span-8 space-y-6">
+                
+                <!-- Cabeçalho da Seção e Filtros de Categoria -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-nexus-border pb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="w-1.5 h-7 rounded-full bg-gradient-to-b from-nexus-purple to-nexus-cyan"></span>
+                        <h2 class="font-display font-bold text-2xl sm:text-3xl text-white tracking-wide">
+                            ÚLTIMAS NOTÍCIAS
+                        </h2>
+                    </div>
+
+                    <!-- Botões de Filtro -->
+                    <div id="category-filters" class="flex flex-wrap gap-2">
+                        <button data-category="Todos" class="filter-btn active px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-nexus-purple text-white shadow-neon-purple transition-all">
+                            Todos
+                        </button>
+                        <button data-category="PC" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-nexus-card text-zinc-400 border border-nexus-border hover:text-white hover:border-zinc-600 transition-all">
+                            PC
+                        </button>
+                        <button data-category="PlayStation" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-nexus-card text-zinc-400 border border-nexus-border hover:text-white hover:border-zinc-600 transition-all">
+                            PlayStation
+                        </button>
+                        <button data-category="Xbox" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-nexus-card text-zinc-400 border border-nexus-border hover:text-white hover:border-zinc-600 transition-all">
+                            Xbox
+                        </button>
+                        <button data-category="Nintendo" class="filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-nexus-card text-zinc-400 border border-nexus-border hover:text-white hover:border-zinc-600 transition-all">
+                            Nintendo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grid de Cards das Notícias (Renderizado via JS) -->
+                <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Os cards serão injetados dinamicamente aqui -->
+                </div>
+
+                <!-- Mensagem quando nenhum resultado for encontrado na busca -->
+                <div id="no-results" class="hidden bg-nexus-card border border-nexus-border rounded-2xl p-10 text-center space-y-3">
+                    <i class="fa-solid fa-ghost text-4xl text-zinc-600"></i>
+                    <h3 class="font-display font-bold text-xl text-white">Nenhuma notícia encontrada</h3>
+                    <p class="text-sm text-zinc-400">Não encontramos resultados para o filtro ou termo pesquisado. Tente outra palavra-chave.</p>
+                    <button onclick="resetFilters()" class="mt-2 px-4 py-2 rounded-xl bg-nexus-cyan/20 text-nexus-cyan border border-nexus-cyan/40 text-xs font-semibold hover:bg-nexus-cyan hover:text-nexus-bg transition-colors">
+                        Limpar Filtros
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- 4) BARRA LATERAL / SIDEBAR (4 colunas) -->
+            <aside class="lg:col-span-4 space-y-8">
+                
+                <!-- Widget: Mais Lidas (Ranking Numerado) -->
+                <div class="bg-nexus-card border border-nexus-border rounded-2xl p-6 space-y-5">
+                    <div class="flex items-center justify-between border-b border-nexus-border pb-3">
+                        <h3 class="font-display font-bold text-xl text-white flex items-center gap-2">
+                            <i class="fa-solid fa-fire text-nexus-purple"></i>
+                            MAIS LIDAS
+                        </h3>
+                        <span class="text-xs text-zinc-500 uppercase font-semibold">Top 5</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Item 1 -->
+                        <div onclick="openArticleModal(1)" class="group flex items-start gap-4 cursor-pointer">
+                            <span class="font-display font-bold text-3xl text-transparent bg-clip-text bg-gradient-to-b from-nexus-cyan to-nexus-purple leading-none">
+                                01
+                            </span>
+                            <div class="space-y-1">
+                                <h4 class="text-sm font-semibold text-zinc-200 group-hover:text-nexus-cyan transition-colors line-clamp-2">
+                                    Elden Ring: Shadow of the Erdtree recebe patch secreto que ajusta chefes finais
+                                </h4>
+                                <span class="text-xs text-zinc-500 block">14.2k visualizações • PC / Consoles</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div onclick="openArticleModal(2)" class="group flex items-start gap-4 cursor-pointer border-t border-nexus-border/60 pt-3">
+                            <span class="font-display font-bold text-3xl text-zinc-600 group-hover:text-nexus-purple transition-colors leading-none">
+                                02
+                            </span>
+                            <div class="space-y-1">
+                                <h4 class="text-sm font-semibold text-zinc-200 group-hover:text-nexus-cyan transition-colors line-clamp-2">
+                                    PlayStation Plus Extra adiciona 12 jogos de peso neste mês; veja a lista completa
+                                </h4>
+                                <span class="text-xs text-zinc-500 block">11.8k visualizações • PlayStation</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div onclick="openArticleModal(3)" class="group flex items-start gap-4 cursor-pointer border-t border-nexus-border/60 pt-3">
+                            <span class="font-display font-bold text-3xl text-zinc-600 group-hover:text-nexus-purple transition-colors leading-none">
+                                03
+                            </span>
+                            <div class="space-y-1">
+                                <h4 class="text-sm font-semibold text-zinc-200 group-hover:text-nexus-cyan transition-colors line-clamp-2">
+                                    Xbox Game Pass confirma lançamento Day-One de novo RPG sci-fi da Obsidian
+                                </h4>
+                                <span class="text-xs text-zinc-500 block">9.5k visualizações • Xbox</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div onclick="openArticleModal(4)" class="group flex items-start gap-4 cursor-pointer border-t border-nexus-border/60 pt-3">
+                            <span class="font-display font-bold text-3xl text-zinc-600 group-hover:text-nexus-purple transition-colors leading-none">
+                                04
+                            </span>
+                            <div class="space-y-1">
+                                <h4 class="text-sm font-semibold text-zinc-200 group-hover:text-nexus-cyan transition-colors line-clamp-2">
+                                    Zelda: Echoes of Wisdom bate recorde de vendas na primeira semana no Japão
+                                </h4>
+                                <span class="text-xs text-zinc-500 block">8.1k visualizações • Nintendo</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 5 -->
+                        <div onclick="openArticleModal(5)" class="group flex items-start gap-4 cursor-pointer border-t border-nexus-border/60 pt-3">
+                            <span class="font-display font-bold text-3xl text-zinc-600 group-hover:text-nexus-purple transition-colors leading-none">
+                                05
+                            </span>
+                            <div class="space-y-1">
+                                <h4 class="text-sm font-semibold text-zinc-200 group-hover:text-nexus-cyan transition-colors line-clamp-2">
+                                    Guia de Otimização: Como ganhar até 40% mais FPS nos lançamentos da Unreal Engine 5
+                                </h4>
+                                <span class="text-xs text-zinc-500 block">7.4k visualizações • PC</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Widget: Próximos Lançamentos -->
+                <div id="proximos-lancamentos" class="bg-nexus-card border border-nexus-border rounded-2xl p-6 space-y-5">
+                    <div class="flex items-center justify-between border-b border-nexus-border pb-3">
+                        <h3 class="font-display font-bold text-xl text-white flex items-center gap-2">
+                            <i class="fa-regular fa-calendar-check text-nexus-cyan"></i>
+                            PRÓXIMOS LANÇAMENTOS
+                        </h3>
+                    </div>
+
+                    <div class="space-y-3.5">
+                        <!-- Lançamento 1 -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-nexus-bg/70 border border-nexus-border hover:border-nexus-cyan/40 transition-colors">
+                            <div class="space-y-0.5">
+                                <h4 class="text-sm font-bold text-white">Stellar Blade: PC Edition</h4>
+                                <span class="text-xs text-zinc-400">PC (Steam / Epic)</span>
+                            </div>
+                            <div class="text-center bg-nexus-purple/20 border border-nexus-purple/40 rounded-lg px-2.5 py-1">
+                                <span class="block text-xs font-bold text-purple-300">28 NOV</span>
+                            </div>
+                        </div>
+
+                        <!-- Lançamento 2 -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-nexus-bg/70 border border-nexus-border hover:border-nexus-cyan/40 transition-colors">
+                            <div class="space-y-0.5">
+                                <h4 class="text-sm font-bold text-white">Metroid Prime 4: Beyond</h4>
+                                <span class="text-xs text-zinc-400">Nintendo Switch</span>
+                            </div>
+                            <div class="text-center bg-nexus-cyan/20 border border-nexus-cyan/40 rounded-lg px-2.5 py-1">
+                                <span class="block text-xs font-bold text-nexus-cyan">05 DEZ</span>
+                            </div>
+                        </div>
+
+                        <!-- Lançamento 3 -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-nexus-bg/70 border border-nexus-border hover:border-nexus-cyan/40 transition-colors">
+                            <div class="space-y-0.5">
+                                <h4 class="text-sm font-bold text-white">Fable: New Horizons</h4>
+                                <span class="text-xs text-zinc-400">Xbox Series X|S, PC</span>
+                            </div>
+                            <div class="text-center bg-zinc-800 border border-zinc-700 rounded-lg px-2.5 py-1">
+                                <span class="block text-xs font-bold text-zinc-300">14 JAN</span>
+                            </div>
+                        </div>
+
+                        <!-- Lançamento 4 -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-nexus-bg/70 border border-nexus-border hover:border-nexus-cyan/40 transition-colors">
+                            <div class="space-y-0.5">
+                                <h4 class="text-sm font-bold text-white">Death Stranding 2: On The Beach</h4>
+                                <span class="text-xs text-zinc-400">PlayStation 5</span>
+                            </div>
+                            <div class="text-center bg-zinc-800 border border-zinc-700 rounded-lg px-2.5 py-1">
+                                <span class="block text-xs font-bold text-zinc-300">22 FEV</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+    </main>
+
+    <!-- 5) RODAPÉ COMPLETO COM NEWSLETTER -->
+    <footer class="bg-nexus-card border-t border-nexus-border mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-10 border-b border-nexus-border">
+                
+                <!-- Coluna Sobre o Portal (4 colunas) -->
+                <div class="lg:col-span-4 space-y-4">
+                    <a href="#" class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-nexus-purple to-nexus-cyan flex items-center justify-center">
+                            <i class="fa-solid fa-gamepad text-white text-sm"></i>
+                        </div>
+                        <span class="font-display font-bold text-2xl tracking-wider text-white">
+                            NEXUS<span class="text-nexus-cyan">GAMER</span>
+                        </span>
+                    </a>
+                    <p class="text-sm text-zinc-400 leading-relaxed">
+                        Seu portal diário com as últimas notícias, análises imparciais, guias aprofundados e cobertura em tempo real do cenário competitivo de E-sports.
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <a href="#" aria-label="Discord" class="w-9 h-9 rounded-xl bg-nexus-bg border border-nexus-border flex items-center justify-center text-zinc-400 hover:text-nexus-purple hover:border-nexus-purple transition-colors">
+                            <i class="fa-brands fa-discord"></i>
+                        </a>
+                        <a href="#" aria-label="YouTube" class="w-9 h-9 rounded-xl bg-nexus-bg border border-nexus-border flex items-center justify-center text-zinc-400 hover:text-red-500 hover:border-red-500 transition-colors">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="#" aria-label="Twitch" class="w-9 h-9 rounded-xl bg-nexus-bg border border-nexus-border flex items-center justify-center text-zinc-400 hover:text-purple-400 hover:border-purple-400 transition-colors">
+                            <i class="fa-brands fa-twitch"></i>
+                        </a>
+                        <a href="#" aria-label="X Twitter" class="w-9 h-9 rounded-xl bg-nexus-bg border border-nexus-border flex items-center justify-center text-zinc-400 hover:text-nexus-cyan hover:border-nexus-cyan transition-colors">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Coluna Plataformas (2 colunas) -->
+                <div class="lg:col-span-2 space-y-3">
+                    <h4 class="font-display font-bold text-lg text-white uppercase tracking-wider">Plataformas</h4>
+                    <ul class="space-y-2 text-sm text-zinc-400">
+                        <li><a href="#ultimas-noticias" onclick="filterFromFooter('PC')" class="hover:text-nexus-cyan transition-colors">PC Gaming</a></li>
+                        <li><a href="#ultimas-noticias" onclick="filterFromFooter('PlayStation')" class="hover:text-nexus-cyan transition-colors">PlayStation 5</a></li>
+                        <li><a href="#ultimas-noticias" onclick="filterFromFooter('Xbox')" class="hover:text-nexus-cyan transition-colors">Xbox Series X|S</a></li>
+                        <li><a href="#ultimas-noticias" onclick="filterFromFooter('Nintendo')" class="hover:text-nexus-cyan transition-colors">Nintendo Switch</a></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna Institucional (2 colunas) -->
+                <div class="lg:col-span-2 space-y-3">
+                    <h4 class="font-display font-bold text-lg text-white uppercase tracking-wider">Portal</h4>
+                    <ul class="space-y-2 text-sm text-zinc-400">
+                        <li><a href="#" class="hover:text-nexus-purple transition-colors">Sobre Nós</a></li>
+                        <li><a href="#" class="hover:text-nexus-purple transition-colors">Política de Reviews</a></li>
+                        <li><a href="#" class="hover:text-nexus-purple transition-colors">Anuncie Aqui</a></li>
+                        <li><a href="#" class="hover:text-nexus-purple transition-colors">Privacidade</a></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna Newsletter (4 colunas) -->
+                <div class="lg:col-span-4 space-y-3">
+                    <h4 class="font-display font-bold text-lg text-white uppercase tracking-wider">
+                        Receba o Loot Semanal
+                    </h4>
+                    <p class="text-sm text-zinc-400">
+                        Assine nossa newsletter gratuita e receba as maiores notícias, chaves de beta e promoções direto no seu e-mail.
+                    </p>
+                    <form id="newsletter-form" class="flex flex-col sm:flex-row gap-2 pt-1">
+                        <input 
+                            type="email" 
+                            id="newsletter-email" 
+                            required 
+                            placeholder="seu.email@exemplo.com" 
+                            class="flex-1 bg-nexus-bg border border-nexus-border focus:border-nexus-purple rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none"
+                        >
+                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-nexus-purple to-nexus-cyan text-white font-semibold text-sm hover:opacity-90 transition-opacity shadow-neon-purple whitespace-nowrap">
+                            Inscrever-se
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-4">
+                <p>&copy; 2026 Nexus Gamer Brasil. Todos os direitos reservados.</p>
+                <p>Feito com <i class="fa-solid fa-bolt text-nexus-cyan mx-1"></i> para jogadores apaixonados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL INTERATIVO PARA LEITURA DA NOTÍCIA COMPLETA -->
+    <div id="article-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm overflow-y-auto">
+        <div class="relative w-full max-w-3xl bg-nexus-card border border-nexus-border rounded-2xl shadow-2xl overflow-hidden my-auto transform transition-all">
+            
+            <!-- Botão Fechar Modal -->
+            <button onclick="closeArticleModal()" aria-label="Fechar Notícia" class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-nexus-bg/80 border border-nexus-border text-zinc-300 hover:text-white hover:border-nexus-cyan flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Imagem de Capa do Modal -->
+            <div class="relative h-64 sm:h-80 w-full">
+                <img id="modal-image" src="" alt="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-nexus-card via-nexus-card/40 to-transparent"></div>
+                <div class="absolute bottom-4 left-6 flex items-center gap-2">
+                    <span id="modal-category" class="px-3 py-1 text-xs font-bold uppercase rounded-lg bg-nexus-purple text-white">
+                        Categoria
+                    </span>
+                    <span id="modal-date" class="text-xs text-zinc-300 bg-nexus-bg/80 px-3 py-1 rounded-lg border border-nexus-border">
+                        Data
+                    </span>
+                </div>
+            </div>
+
+            <!-- Conteúdo do Artigo -->
+            <div class="p-6 sm:p-8 space-y-5 max-h-[60vh] overflow-y-auto">
+                <h2 id="modal-title" class="font-display font-bold text-2xl sm:text-3xl text-white leading-tight">
+                    Título da Notícia
+                </h2>
+                
+                <div class="flex items-center justify-between border-y border-nexus-border py-3 text-xs text-zinc-400">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-full bg-nexus-purple/30 border border-nexus-purple flex items-center justify-center text-purple-300 font-bold">
+                            NG
+                        </div>
+                        <span>Por <strong id="modal-author" class="text-zinc-200">Redação Nexus</strong></span>
+                    </div>
+                    <button onclick="shareArticle()" class="flex items-center gap-1.5 text-nexus-cyan hover:underline">
+                        <i class="fa-solid fa-share-nodes"></i> Compartilhar
+                    </button>
+                </div>
+
+                <div id="modal-content" class="space-y-4 text-zinc-300 text-sm sm:text-base leading-relaxed">
+                    <!-- Parágrafos da notícia inseridos via JS -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCRIPTS DE INTERATIVIDADE -->
+    <script>
+        // Banco de Dados Simulado de Notícias (Inclui destaques e cards do grid)
+        const articlesData = [
+            {
+                id: 1,
+                title: "Elden Ring: Shadow of the Erdtree recebe patch secreto que ajusta chefes finais",
+                category: "PC",
+                tagColor: "cyan",
+                date: "19 Nov 2026",
+                author: "Lucas Mendes",
+                summary: "A FromSoftware aplicou uma atualização silenciosa balanceando o dano em área e a agressividade dos encontros finais da expansão.",
+                image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
+                content: [
+                    "Os jogadores mais atentos de Elden Ring: Shadow of the Erdtree notaram mudanças significativas no comportamento de dois dos chefes mais desafiadores da expansão após a manutenção de servidores desta manhã.",
+                    "De acordo com análises feitas pela comunidade de modders no PC, os intervalos entre combos pesados foram aumentados em milissegundos cruciais, permitindo janelas de cura mais justas sem comprometer a dificuldade característica do estúdio.",
+                    "A atualização já está disponível automaticamente na Steam, PlayStation 5 e Xbox Series X|S."
+                ]
+            },
+            {
+                id: 2,
+                title: "PlayStation Plus Extra adiciona 12 jogos de peso neste mês; veja a lista completa",
+                category: "PlayStation",
+                tagColor: "purple",
+                date: "19 Nov 2026",
+                author: "Marina Costa",
+                summary: "Catálogo ganha grandes títulos AAA de ação e aventura, além de clássicos remasterizados do PS2 para assinantes Deluxe.",
+                image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&w=800&q=80",
+                content: [
+                    "A Sony revelou oficialmente a nova leva de jogos que chegam ao catálogo do PlayStation Plus Extra e Deluxe na próxima terça-feira.",
+                    "O grande destaque fica por conta da chegada de grandes produções de mundo aberto e RPGs aclamados pela crítica, oferecendo dezenas de horas de conteúdo sem custo adicional para os assinantes.",
+                    "Os jogos estarão disponíveis para download a partir das 13h (horário de Brasília)."
+                ]
+            },
+            {
+                id: 3,
+                title: "Xbox Game Pass confirma lançamento Day-One de novo RPG sci-fi da Obsidian",
+                category: "Xbox",
+                tagColor: "cyan",
+                date: "18 Nov 2026",
+                author: "Rafael Silva",
+                summary: "O estúdio mestre em narrativas ramificadas revelou um trailer de gameplay inédito mostrando exploração espacial e diálogos profundos.",
+                image: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=800&q=80",
+                content: [
+                    "Durante o evento especial transmitido hoje, a Microsoft confirmou que o próximo grande RPG de ficção científica da Obsidian Entertainment chegará no primeiro dia ao Xbox Game Pass para console, PC e Cloud Gaming.",
+                    "O vídeo de 15 minutos destacou o sistema de reputação entre facções galácticas e o combate tático em tempo real com pausa ativa.",
+                    "A pré-instalação já pode ser iniciada através do aplicativo oficial do Xbox."
+                ]
+            },
+            {
+                id: 4,
+                title: "Zelda: Echoes of Wisdom bate recorde de vendas na primeira semana no Japão",
+                category: "Nintendo",
+                tagColor: "purple",
+                date: "18 Nov 2026",
+                author: "Beatriz Tanaka",
+                summary: "A aventura protagonizada pela Princesa Zelda conquistou o topo das paradas físicas e digitais, superando expectativas da Nintendo.",
+                image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
+                content: [
+                    "A aposta da Nintendo em colocar a Princesa Zelda como protagonista jogável usando a mecânica criativa de 'Ecos' provou ser um sucesso absoluto de público e crítica.",
+                    "Segundo os relatórios semanais da Famitsu, o título vendeu mais de 350 mil cópias físicas apenas nos primeiros três dias no arquipélago japonês, sem contar os downloads na eShop.",
+                    "Em nossa análise completa, destacamos como a liberdade para resolver quebra-cabeças torna cada jornada única."
+                ]
+            },
+            {
+                id: 5,
+                title: "Guia de Otimização: Como ganhar até 40% mais FPS nos lançamentos da Unreal Engine 5",
+                category: "PC",
+                tagColor: "cyan",
+                date: "17 Nov 2026",
+                author: "Lucas Mendes",
+                summary: "Aprenda a configurar corretamente o Lumen, Nanite e tecnologias de upscaling como DLSS 3.7 e FSR 3 para rodar tudo liso.",
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=800&q=80",
+                content: [
+                    "Os jogos modernos construídos na Unreal Engine 5 entregam visuais fotorrealistas impressionantes, mas exigem bastante das placas de vídeo intermediárias.",
+                    "Testamos diversas combinações de configurações gráficas e descobrimos que reduzir a qualidade da Iluminação Global (Lumen) do 'Épico' para o 'Alto' libera até 25% de performance mantendo 95% da fidelidade visual.",
+                    "Combinando isso com a geração de quadros e drivers atualizados, é possível alcançar taxas estáveis acima de 90 FPS."
+                ]
+            },
+            {
+                id: 6,
+                title: "Novo controle DualSense Edge ganha edição limitada inspirada nos clássicos do PS1",
+                category: "PlayStation",
+                tagColor: "purple",
+                date: "17 Nov 2026",
+                author: "Marina Costa",
+                summary: "Com acabamento cinza retrô e botões coloridos clássicos, o acessório chega em quantidades limitadas ainda este ano.",
+                image: "https://images.unsplash.com/photo-1592840496694-26d035b52b48?auto=format&fit=crop&w=800&q=80",
+                content: [
+                    "Para celebrar o legado da marca PlayStation, a Sony anunciou uma edição comemorativa do controle profissional DualSense Edge.",
+                    "O modelo traz o icônico tom de cinza do primeiro console de 1994, conector do cabo USB trançado estilizado e estojo de transporte exclusivo.",
+                    "Todas as funcionalidades avançadas, como módulos de analógicos substituíveis e perfis personalizados, permanecem intactas."
+                ]
+            },
+            // Artigos exclusivos da Seção Hero (IDs 101, 102, 103)
+            {
+                id: 101,
+                title: "Cyberpunk Odyssey: Expansão gratuita promete revolucionar o combate cibernético e dobrar o mapa",
+                category: "PC / Consoles",
+                tagColor: "purple",
+                date: "Hoje, às 13:15",
+                author: "Lucas Mendes",
+                summary: "Testamos antecipadamente a atualização 3.0 que traz suporte nativo a Path Tracing de nova geração.",
+                image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+                content: [
+                    "Tivemos acesso exclusivo durante 4 horas à nova atualização 3.0 de Cyberpunk Odyssey, e o salto técnico é simplesmente impressionante.",
+                    "Além de expandir o distrito industrial com novas linhas de metrô interativas e missões dinâmicas de perseguição veicular, o sistema de implantes cibernéticos foi completamente reformulado.",
+                    "Agora, combinar habilidades de hackeamento rápido com armas inteligentes cria sinergias elementais devastadoras. A atualização será gratuita para todos os jogadores na próxima semana."
+                ]
+            },
+            {
+                id: 102,
+                title: "Vazam especificações técnicas do próximo console híbrido da Nintendo com tela OLED 120Hz",
+                category: "Nintendo",
+                tagColor: "cyan",
+                date: "Hoje, às 11:30",
+                author: "Marina Costa",
+                summary: "Documentos de cadeia de suprimentos indicam suporte a resolução 4K no modo dock e retrocompatibilidade total.",
+                image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80",
+                content: [
+                    "Novos relatórios vindos de fabricantes asiáticos apontam que o sucessor do Nintendo Switch contará com uma tela OLED de 8 polegadas com taxa de atualização variável de até 120Hz.",
+                    "Segundo as fontes, o chip customizado da NVIDIA permitirá o uso de reconstrução de imagem por inteligência artificial para entregar jogos em 4K quando conectado à televisão.",
+                    "A Nintendo ainda não comentou oficialmente os rumores, mas um anúncio oficial é esperado para os próximos meses."
+                ]
+            },
+            {
+                id: 103,
+                title: "Equipe brasileira faz história e garante vaga na grande final do Masters de Valorant em Tóquio",
+                category: "E-Sports",
+                tagColor: "purple",
+                date: "Hoje, às 10:10",
+                author: "Rafael Silva",
+                summary: "Com uma virada épica na prorrogação do terceiro mapa, o time brasileiro superou os favoritos europeus.",
+                image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=800&q=80",
+                content: [
+                    "Em uma série melhor de três eletrizante que parou a comunidade gamer brasileira, a equipe representante do Brasil venceu por 2 a 1 e carimbou o passaporte para a grande final internacional.",
+                    "O destaque da partida ficou por conta do duelista brasileiro, que garantiu um 'Ace' decisivo no round econômico da prorrogação, levando a arena em Tóquio ao delírio.",
+                    "A grande final acontece neste domingo, a partir das 05h da manhã (horário de Brasília)."
+                ]
+            }
+        ];
+
+        // Estado atual dos filtros
+        let currentCategory = 'Todos';
+        let currentSearchQuery = '';
+
+        // Elementos do DOM
+        const newsGrid = document.getElementById('news-grid');
+        const noResults = document.getElementById('no-results');
+        const searchInput = document.getElementById('search-input');
+        const searchInputMobile = document.getElementById('search-input-mobile');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        // Renderizar os cards no Grid Principal (apenas IDs < 100 para não duplicar o Hero)
+        function renderNewsGrid() {
+            const gridArticles = articlesData.filter(article => article.id < 100);
+            
+            const filtered = gridArticles.filter(article => {
+                const matchesCategory = currentCategory === 'Todos' || article.category === currentCategory;
+                const searchLower = currentSearchQuery.toLowerCase().trim();
+                const matchesSearch = article.title.toLowerCase().includes(searchLower) || 
+                                      article.summary.toLowerCase().includes(searchLower) ||
+                                      article.category.toLowerCase().includes(searchLower);
+                return matchesCategory && matchesSearch;
+            });
+
+            newsGrid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                newsGrid.classList.add('hidden');
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            newsGrid.classList.remove('hidden');
+            noResults.classList.add('hidden');
+
+            filtered.forEach(article => {
+                const badgeStyle = article.tagColor === 'purple' 
+                    ? 'bg-nexus-purple/20 text-purple-300 border-nexus-purple/40' 
+                    : 'bg-nexus-cyan/20 text-nexus-cyan border-nexus-cyan/40';
+
+                const cardHTML = `
+                    <article onclick="openArticleModal(${article.id})" class="group bg-nexus-card border border-nexus-border hover:border-nexus-cyan/60 rounded-2xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 hover:-translate-y-1 shadow-md hover:shadow-neon-cyan/20">
+                        <div>
+                            <!-- Imagem com zoom suave no hover -->
+                            <div class="relative h-48 overflow-hidden bg-zinc-900">
+                                <img 
+                                    src="${article.image}" 
+                                    onerror="this.src='https://placehold.co/800x500/121216/06b6d4?text=Nexus+Gamer'"
+                                    alt="${article.title}" 
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                >
+                                <span class="absolute top-3 left-3 px-2.5 py-1 text-xs font-bold uppercase rounded-lg backdrop-blur-md border ${badgeStyle}">
+                                    ${article.category}
+                                </span>
+                            </div>
+
+                            <!-- Conteúdo do Card -->
+                            <div class="p-5 space-y-2.5">
+                                <h3 class="font-display font-bold text-xl text-white leading-snug group-hover:text-nexus-cyan transition-colors line-clamp-2">
+                                    ${article.title}
+                                </h3>
+                                <p class="text-sm text-zinc-400 line-clamp-3 leading-relaxed">
+                                    ${article.summary}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Rodapé do Card -->
+                        <div class="px-5 py-3.5 border-t border-nexus-border/60 flex items-center justify-between text-xs text-zinc-500">
+                            <span><i class="fa-regular fa-calendar mr-1.5 text-nexus-purple"></i>${article.date}</span>
+                            <span class="text-nexus-cyan font-semibold group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                                Ler mais <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </span>
+                        </div>
+                    </article>
+                `;
+                newsGrid.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        // Configurar cliques nos botões de filtro
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Atualizar visual dos botões
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-nexus-purple', 'text-white', 'shadow-neon-purple');
+                    b.classList.add('bg-nexus-card', 'text-zinc-400', 'border', 'border-nexus-border');
+                });
+                btn.classList.remove('bg-nexus-card', 'text-zinc-400', 'border', 'border-nexus-border');
+                btn.classList.add('bg-nexus-purple', 'text-white', 'shadow-neon-purple');
+
+                currentCategory = btn.getAttribute('data-category');
+                renderNewsGrid();
+            });
+        });
+
+        // Filtro rápido vindo do rodapé
+        function filterFromFooter(category) {
+            const targetBtn = Array.from(filterButtons).find(b => b.getAttribute('data-category') === category);
+            if (targetBtn) targetBtn.click();
+        }
+
+        // Resetar filtros
+        function resetFilters() {
+            currentCategory = 'Todos';
+            currentSearchQuery = '';
+            searchInput.value = '';
+            if (searchInputMobile) searchInputMobile.value = '';
+            filterButtons[0].click();
+        }
+
+        // Eventos da Barra de Pesquisa (Desktop e Mobile sincronizados)
+        function handleSearch(e) {
+            currentSearchQuery = e.target.value;
+            if (e.target === searchInput && searchInputMobile) {
+                searchInputMobile.value = currentSearchQuery;
+            } else if (e.target === searchInputMobile && searchInput) {
+                searchInput.value = currentSearchQuery;
+            }
+            renderNewsGrid();
+        }
+
+        searchInput.addEventListener('input', handleSearch);
+        if (searchInputMobile) searchInputMobile.addEventListener('input', handleSearch);
+
+        // Menu Mobile Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Lógica do Modal de Leitura
+        const modal = document.getElementById('article-modal');
+
+        function openArticleModal(articleId) {
+            const article = articlesData.find(a => a.id === articleId);
+            if (!article) return;
+
+            document.getElementById('modal-image').src = article.image;
+            document.getElementById('modal-category').textContent = article.category;
+            document.getElementById('modal-date').textContent = article.date;
+            document.getElementById('modal-title').textContent = article.title;
+            document.getElementById('modal-author').textContent = article.author;
+
+            const contentContainer = document.getElementById('modal-content');
+            contentContainer.innerHTML = article.content.map(p => `<p>${p}</p>`).join('');
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // Trava scroll da página
+        }
+
+        function closeArticleModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = ''; // Restaura scroll
+        }
+
+        // Fechar modal ao clicar fora ou apertar ESC
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeArticleModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeArticleModal();
+            }
+        });
+
+        // Sistema de Notificação Toast (Sem alert())
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+
+        // Compartilhar Link (Compatível com iframe usando execCommand)
+        function shareArticle() {
+            const tempInput = document.createElement('input');
+            tempInput.value = window.location.href;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand('copy');
+                showToast('Link da notícia copiado para a área de transferência!');
+            } catch (err) {
+                showToast('Pronto para compartilhar!');
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        // Formulário da Newsletter
+        document.getElementById('newsletter-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('newsletter-email');
+            if (emailInput.value.trim()) {
+                showToast('Inscrição confirmada! Bem-vindo ao Nexus Gamer.');
+                emailInput.value = '';
+            }
+        });
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            renderNewsGrid();
+        });
+    </script>
 </body>
-
 </html>
